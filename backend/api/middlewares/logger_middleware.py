@@ -22,8 +22,11 @@ class LoggerMiddleware(BaseHTTPMiddleware):
         # TODO:(Member) Finish implementing this method
         start = datetime.now()
         logging.logger.info(f"Request: {request.method} at {request.url}")
-        data = await request.json()
-        logging.logger.info(f"Params: {data}")
+        try:
+            data = await request.json()
+            logging.logger.info(f"Params: {data}")
+        except Exception as e:
+            logging.logger.info(f"{e}")
         response = await call_next(request)
         logging.logger.info(f"Duration: {datetime.now() - start}")
         return response
